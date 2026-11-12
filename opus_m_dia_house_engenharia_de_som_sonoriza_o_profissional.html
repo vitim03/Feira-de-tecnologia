@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opus Mídia House | Engenharia de Som, Sonorização & Acústica</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f4ff',
+                            100: '#e0e9ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81',
+                            950: '#0f1026',
+                        },
+                        audio: {
+                            400: '#38bdf8',
+                            500: '#06b6d4',
+                            600: '#0891b2',
+                            700: '#0e7490',
+                        },
+                        accent: {
+                            500: '#10b981',
+                            600: '#059669',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        .glass { 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px);
+        }
+        .dark .glass { 
+            background: rgba(15, 23, 42, 0.88); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(30, 41, 59, 0.8);
+        }
+
+        .vu-meter-bar {
+            background: linear-gradient(90deg, #10b981 0%, #f59e0b 70%, #ef4444 100%);
+        }
+
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(12px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        .animate-fade-in { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        .dark ::-webkit-scrollbar-thumb { background: #334155; }
+        
+        /* Print Styles for Booking Receipt */
+        @media print {
+            body * { visibility: hidden; }
+            #printable-receipt, #printable-receipt * { visibility: visible; }
+            #printable-receipt { position: absolute; left: 0; top: 0; width: 100%; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
+
+    <!-- TOP ANNOUNCEMENT BAR -->
+    <div class="bg-gradient-to-r from-brand-950 via-brand-900 to-slate-900 text-white text-xs py-2 px-4 text-center font-medium flex items-center justify-center space-x-2 relative z-50 border-b border-brand-800/40">
+        <span class="inline-block w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+        <span>Atendimento Técnico Especializado em Maringá e Região — Alinhamento por RTA (SMAART) & Certificação Áudio Profissional.</span>
+        <a href="tel:4498417019" class="underline font-bold hover:text-cyan-300 transition ml-2 hidden sm:inline">(44) 9841-7019</a>
+    </div>
+
+    <!-- MAIN NAVBAR -->
+    <header class="sticky top-0 z-40 glass border-b border-slate-200/80 dark:border-slate-800/80 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer group" onclick="switchTab('home')">
+                <div class="w-11 h-11 bg-gradient-to-tr from-brand-700 via-brand-600 to-cyan-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-brand-500/30 group-hover:scale-105 transition transform">
+                    <i data-lucide="sliders" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-1.5">
+                        <span class="text-2xl font-black tracking-tight bg-gradient-to-r from-brand-600 via-indigo-600 to-cyan-500 bg-clip-text text-transparent">Opus Mídia</span>
+                        <span class="text-xs px-2 py-0.5 rounded-full bg-brand-100 dark:bg-brand-950 text-brand-700 dark:text-brand-300 font-bold border border-brand-200 dark:border-brand-800 uppercase">AUDIO</span>
+                    </div>
+                    <span class="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Engenharia de Som & Acústica</span>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="hidden lg:flex items-center space-x-1 font-medium text-sm">
+                <button onclick="switchTab('home')" class="nav-btn px-4 py-2.5 rounded-xl transition hover:bg-slate-100 dark:hover:bg-slate-900 text-brand-600 dark:text-brand-400 font-bold" data-target="home">Início</button>
+                <button onclick="switchTab('services')" class="nav-btn px-4 py-2.5 rounded-xl transition hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-600 dark:text-slate-300" data-target="services">Serviços Áudio</button>
+                <button onclick="switchTab('calculator')" class="nav-btn px-4 py-2.5 rounded-xl transition hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-600 dark:text-slate-300" data-target="calculator">Simulador 3D</button>
+                <button onclick="switchTab('booking')" class="nav-btn px-4 py-2.5 rounded-xl transition hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-600 dark:text-slate-300" data-target="booking">Agendar Visita</button>
+                <button onclick="switchTab('gallery')" class="nav-btn px-4 py-2.5 rounded-xl transition hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-600 dark:text-slate-300" data-target="gallery">Portfólio</button>
+                <button onclick="handleAdminTabClick()" class="nav-btn px-3.5 py-2 rounded-xl border border-brand-200 dark:border-brand-900/60 bg-brand-50/80 dark:bg-brand-950/40 text-brand-700 dark:text-brand-300 font-bold flex items-center space-x-2 transition hover:bg-brand-100" data-target="admin">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i>
+                    <span>Painel Admin</span>
+                </button>
+            </nav>
+
+            <!-- Actions Bar -->
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleDarkMode()" id="theme-btn" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 transition" title="Alternar Tema">
+                    <i data-lucide="moon" id="theme-icon" class="w-5 h-5"></i>
+                </button>
+                
+                <a href="https://wa.me/554498417019?text=Olá!%20Gostaria%20de%20solicitar%20uma%20avaliação%20técnica%20de%20som%20com%20a%20Opus%20Mídia%20House." target="_blank" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-lg shadow-emerald-600/25 transition transform active:scale-95 space-x-2">
+                    <i data-lucide="message-square" class="w-4 h-4"></i>
+                    <span>WhatsApp Direto</span>
+                </a>
+
+                <button onclick="toggleMobileMenu()" class="lg:hidden p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300">
+                    <i data-lucide="menu" id="mobile-menu-icon" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg px-6 py-6 space-y-3 animate-fade-in shadow-2xl">
+            <button onclick="switchTab('home'); toggleMobileMenu()" class="flex items-center space-x-3 w-full text-left px-4 py-3 rounded-xl font-bold hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200">
+                <i data-lucide="home" class="w-5 h-5 text-brand-600"></i>
+                <span>Início</span>
+            </button>
+            <button onclick="switchTab('services'); toggleMobileMenu()" class="flex items-center space-x-3 w-full text-left px-4 py-3 rounded-xl font-bold hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200">
+                <i data-lucide="disc" class="w-5 h-5 text-brand-600"></i>
+                <span>Serviços de Som & Acústica</span>
+            </button>
+            <button onclick="switchTab('calculator'); toggleMobileMenu()" class="flex items-center space-x-3 w-full text-left px-4 py-3 rounded-xl font-bold hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200">
+                <i data-lucide="calculator" class="w-5 h-5 text-brand-600"></i>
+                <span>Simulador de Orçamento</span>
+            </button>
+            <button onclick="switchTab('booking'); toggleMobileMenu()" class="flex items-center space-x-3 w-full text-left px-4 py-3 rounded-xl font-bold hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200">
+                <i data-lucide="calendar" class="w-5 h-5 text-brand-600"></i>
+                <span>Agendar Visita Técnica</span>
+            </button>
+            <button onclick="switchTab('gallery'); toggleMobileMenu()" class="flex items-center space-x-3 w-full text-left px-4 py-3 rounded-xl font-bold hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200">
+                <i data-lucide="image" class="w-5 h-5 text-brand-600"></i>
+                <span>Portfólio de Projetos</span>
+            </button>
+            <button onclick="handleAdminTabClick(); toggleMobileMenu()" class="flex items-center space-x-3 w-full text-left px-4 py-3 rounded-xl font-bold bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400">
+                <i data-lucide="shield-check" class="w-5 h-5"></i>
+                <span>Painel de Administração</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+
+        <!-- ================= HOME TAB ================= -->
+        <section id="tab-home" class="tab-content animate-fade-in">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28 bg-gradient-to-b from-brand-50/60 via-transparent to-transparent dark:from-brand-950/30">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                        
+                        <!-- Left Hero Column -->
+                        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                            <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-brand-100/80 dark:bg-brand-950/80 border border-brand-200 dark:border-brand-800/60 text-brand-800 dark:text-brand-300 text-xs font-extrabold uppercase tracking-widest shadow-sm">
+                                <i data-lucide="volume-2" class="w-4 h-4 text-brand-600"></i>
+                                <span>Engenharia de Som & Sonoplastia Profissional</span>
+                            </div>
+                            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-none">
+                                Som com <span class="bg-gradient-to-r from-brand-600 via-indigo-600 to-cyan-500 bg-clip-text text-transparent">clareza cristalina</span> e sem microfonias.
+                            </h1>
+                            <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                                A **Opus Mídia House** é especializada em regulagem de mesas digitais, alinhamento de caixas de som, calibração de processadores DSP, tratamento acústico e treinamento de voluntários para Igrejas, Academias, Bares e Auditórios.
+                            </p>
+                            
+                            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-3 sm:space-y-0 sm:space-x-4 pt-2">
+                                <button onclick="switchTab('calculator')" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-extrabold shadow-xl shadow-brand-600/30 transition transform active:scale-95 flex items-center justify-center space-x-3">
+                                    <i data-lucide="calculator" class="w-5 h-5"></i>
+                                    <span>Simular Orçamento Instântaneo</span>
+                                </button>
+                                <button onclick="switchTab('booking')" class="w-full sm:w-auto px-8 py-4 rounded-2xl border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-800 font-bold transition flex items-center justify-center space-x-2">
+                                    <i data-lucide="calendar" class="w-5 h-5 text-brand-600"></i>
+                                    <span>Agendar Diagnóstico no Local</span>
+                                </button>
+                            </div>
+                            
+                            <!-- Trust Metrics -->
+                            <div class="pt-8 border-t border-slate-200/80 dark:border-slate-800/80 grid grid-cols-3 gap-4 text-center lg:text-left">
+                                <div>
+                                    <p class="text-2xl sm:text-3xl font-black text-brand-600 dark:text-brand-400">+350</p>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-1">Sistemas Calibrados</p>
+                                </div>
+                                <div>
+                                    <p class="text-2xl sm:text-3xl font-black text-brand-600 dark:text-brand-400">100%</p>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-1">Zero Ruídos & Chiados</p>
+                                </div>
+                                <div>
+                                    <p class="text-2xl sm:text-3xl font-black text-brand-600 dark:text-brand-400">+1.200</p>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-1">Operadores Treinados</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Hero Interactive Visual Card -->
+                        <div class="lg:col-span-5 relative">
+                            <div class="relative mx-auto max-w-md rounded-3xl p-8 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800/80 shadow-2xl backdrop-blur-xl">
+                                <div class="absolute -top-3 -right-3 bg-cyan-500 text-white text-xs font-bold px-3.5 py-1.5 rounded-full shadow-lg flex items-center space-x-1.5 animate-bounce">
+                                    <i data-lucide="activity" class="w-4 h-4"></i>
+                                    <span>Análise por RTA SMAART</span>
+                                </div>
+                                
+                                <div class="mb-6 space-y-1">
+                                    <span class="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Diferencial Opus Áudio</span>
+                                    <h3 class="text-xl font-extrabold">Por que contratar a Opus Mídia?</h3>
+                                </div>
+
+                                <ul class="space-y-4 text-xs sm:text-sm">
+                                    <li class="flex items-start space-x-3.5">
+                                        <div class="p-2 rounded-xl bg-brand-50 dark:bg-brand-950 text-brand-600 shrink-0">
+                                            <i data-lucide="sliders" class="w-5 h-5"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold">Especialista em Mesas Digitais</p>
+                                            <p class="text-slate-500 dark:text-slate-400 text-xs">Domínio total das plataformas Behringer (X32/XR18), Yamaha (CL/QL/TF), Soundcraft, Allen & Heath e Midas.</p>
+                                        </div>
+                                    </li>
+                                    <li class="flex items-start space-x-3.5">
+                                        <div class="p-2 rounded-xl bg-brand-50 dark:bg-brand-950 text-brand-600 shrink-0">
+                                            <i data-lucide="speaker" class="w-5 h-5"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold">Alinhamento Científico de Fase e EQ</p>
+                                            <p class="text-slate-500 dark:text-slate-400 text-xs">Medição técnica para que cada ponto do seu templo ou academia receba o som com igual pressão e fidelidade.</p>
+                                        </div>
+                                    </li>
+                                    <li class="flex items-start space-x-3.5">
+                                        <div class="p-2 rounded-xl bg-brand-50 dark:bg-brand-950 text-brand-600 shrink-0">
+                                            <i data-lucide="users" class="w-5 h-5"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold">Capacitação Didática da Equipe</p>
+                                            <p class="text-slate-500 dark:text-slate-400 text-xs">Treinamos voluntários e operadores para operarem a mesa com confiança e preservarem os equipamentos.</p>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <div class="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800 text-center">
+                                    <button onclick="switchTab('services')" class="text-brand-600 dark:text-brand-400 font-bold text-sm hover:underline inline-flex items-center space-x-1.5">
+                                        <span>Conhecer Nossas Soluções de Som</span>
+                                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Services Overview Banner -->
+            <div class="py-20 bg-slate-100/70 dark:bg-slate-900/50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+                        <h2 class="text-3xl font-black tracking-tight sm:text-4xl">Especialidades em Engenharia de Áudio</h2>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base">Projetos sob medida para Igrejas, Academias, Bares, Auditórios e Estúdios de Gravação.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Card 1 -->
+                        <div class="bg-white dark:bg-slate-900 p-7 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition duration-300 flex flex-col justify-between group">
+                            <div class="space-y-4">
+                                <div class="w-12 h-12 rounded-2xl bg-brand-50 dark:bg-brand-950/80 text-brand-600 flex items-center justify-center group-hover:scale-110 transition duration-300">
+                                    <i data-lucide="sliders" class="w-6 h-6"></i>
+                                </div>
+                                <h3 class="text-lg font-extrabold">Configuração de Mesa de Som</h3>
+                                <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">Organização de DCA, Cenas, Roteamento de Auxiliares, Fone In-Ear, Gate, Compressor e Equalização Fina.</p>
+                            </div>
+                            <button onclick="selectServiceForCalculator('Ajuste e Mixagem em Mesa de Som Digital', 300)" class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs font-bold text-brand-600 dark:text-brand-400 inline-flex items-center justify-between w-full group-hover:translate-x-1 transition">
+                                <span>Simular Projeto</span>
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="bg-white dark:bg-slate-900 p-7 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition duration-300 flex flex-col justify-between group">
+                            <div class="space-y-4">
+                                <div class="w-12 h-12 rounded-2xl bg-brand-50 dark:bg-brand-950/80 text-brand-600 flex items-center justify-center group-hover:scale-110 transition duration-300">
+                                    <i data-lucide="speaker" class="w-6 h-6"></i>
+                                </div>
+                                <h3 class="text-lg font-extrabold">Instalação & Alinhamento PA</h3>
+                                <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">Fixação de caixas ambientadas em igrejas ou academias, alinhamento de delay e equalização de salas por RTA.</p>
+                            </div>
+                            <button onclick="selectServiceForCalculator('Instalação e Calibração de Caixas de Som', 450)" class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs font-bold text-brand-600 dark:text-brand-400 inline-flex items-center justify-between w-full group-hover:translate-x-1 transition">
+                                <span>Simular Projeto</span>
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="bg-white dark:bg-slate-900 p-7 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition duration-300 flex flex-col justify-between group">
+                            <div class="space-y-4">
+                                <div class="w-12 h-12 rounded-2xl bg-brand-50 dark:bg-brand-950/80 text-brand-600 flex items-center justify-center group-hover:scale-110 transition duration-300">
+                                    <i data-lucide="radio" class="w-6 h-6"></i>
+                                </div>
+                                <h3 class="text-lg font-extrabold">Eliminação de Ruídos & Loops</h3>
+                                <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">Eliminação de hums de aterramento (Ground Loop), cancelamento de microfonias e limpeza de fiação de palco.</p>
+                            </div>
+                            <button onclick="selectServiceForCalculator('Correção de Ruídos, Ground Loops & Microfonia', 250)" class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs font-bold text-brand-600 dark:text-brand-400 inline-flex items-center justify-between w-full group-hover:translate-x-1 transition">
+                                <span>Simular Projeto</span>
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <!-- Card 4 -->
+                        <div class="bg-white dark:bg-slate-900 p-7 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition duration-300 flex flex-col justify-between group">
+                            <div class="space-y-4">
+                                <div class="w-12 h-12 rounded-2xl bg-brand-50 dark:bg-brand-950/80 text-brand-600 flex items-center justify-center group-hover:scale-110 transition duration-300">
+                                    <i data-lucide="waves" class="w-6 h-6"></i>
+                                </div>
+                                <h3 class="text-lg font-extrabold">Tratamento Acústico de Sala</h3>
+                                <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">Projetos de difusores, nuvens acústicas e absorvedores de graves para controle do tempo de reverberação (RT60).</p>
+                            </div>
+                            <button onclick="selectServiceForCalculator('Tratamento & Isolamento Acústico', 600)" class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs font-bold text-brand-600 dark:text-brand-400 inline-flex items-center justify-between w-full group-hover:translate-x-1 transition">
+                                <span>Simular Projeto</span>
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonials & Reviews -->
+            <div class="py-20">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col md:flex-row items-center justify-between mb-12 gap-6">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Opinião de Quem Confia</span>
+                            <h2 class="text-3xl font-black tracking-tight">Depoimentos dos Nossos Clientes</h2>
+                        </div>
+                        <div class="flex items-center space-x-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-4 py-2 rounded-2xl shadow-sm">
+                            <div class="flex text-amber-400 space-x-1">
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            </div>
+                            <span class="font-extrabold text-sm">5.0 / 5.0</span>
+                            <span class="text-xs text-slate-400 font-medium">(Igrejas, Academias e Eventos)</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Review 1 -->
+                        <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                            <div class="space-y-4">
+                                <div class="flex text-amber-400 space-x-1">
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                </div>
+                                <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed italic">"Nossa igreja sofria há anos com eco e apitos na voz do pastor. A Opus reorganizou a X32, ajustou os crossovers e agora o som é perfeito e inteligível em todas as bancadas."</p>
+                            </div>
+                            <div class="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-full bg-brand-100 dark:bg-brand-950 text-brand-700 font-extrabold flex items-center justify-center text-sm">PR</div>
+                                <div>
+                                    <p class="font-bold text-sm">Pr. Marcos Oliveira</p>
+                                    <p class="text-xs text-slate-500">Igreja Comunidade da Fé</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Review 2 -->
+                        <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                            <div class="space-y-4">
+                                <div class="flex text-amber-400 space-x-1">
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                </div>
+                                <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed italic">"Instalaram 12 caixas de som bem distribuídas na nossa academia. A música tem grave forte sem incomodar a recepção e sem distorcer na hora do pico."</p>
+                            </div>
+                            <div class="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-full bg-brand-100 dark:bg-brand-950 text-brand-700 font-extrabold flex items-center justify-center text-sm">RM</div>
+                                <div>
+                                    <p class="font-bold text-sm">Rodrigo Martins</p>
+                                    <p class="text-xs text-slate-500">Proprietário de Academia Fit</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Review 3 -->
+                        <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                            <div class="space-y-4">
+                                <div class="flex text-amber-400 space-x-1">
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                </div>
+                                <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed italic">"Contratei o treinamento para os nossos voluntários de som. Em um único fim de semana eles aprenderam a passar a som rápida e salvar cenas personalizadas."</p>
+                            </div>
+                            <div class="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-full bg-brand-100 dark:bg-brand-950 text-brand-700 font-extrabold flex items-center justify-center text-sm">CL</div>
+                                <div>
+                                    <p class="font-bold text-sm">Camila Lima</p>
+                                    <p class="text-xs text-slate-500">Líder do Ministério de Música</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="py-20 bg-slate-100/70 dark:bg-slate-900/50">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12 space-y-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Tire Suas Dúvidas</span>
+                        <h2 class="text-3xl font-black tracking-tight">Perguntas Frequentes sobre Áudio</h2>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm cursor-pointer" onclick="toggleFaq(this)">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-bold text-base">Vocês atendem quais modelos de mesa de som?</h3>
+                                <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform duration-300"></i>
+                            </div>
+                            <p class="faq-content hidden text-sm text-slate-500 dark:text-slate-400 mt-4 leading-relaxed">Trabalhamos com praticamente todas as marcas do mercado: Behringer (X32, M32, XR12, XR18), Yamaha (TF, QL, CL, MG), Soundcraft (Ui16, Ui24r, Si Impact), Allen & Heath (SQ, Qu, Xone), Midas e analógicas em geral.</p>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm cursor-pointer" onclick="toggleFaq(this)">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-bold text-base">É possível resolver a microfonia sem comprar equipamentos novos?</h3>
+                                <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform duration-300"></i>
+                            </div>
+                            <p class="faq-content hidden text-sm text-slate-500 dark:text-slate-400 mt-4 leading-relaxed">Na maioria dos casos, sim! A microfonia costuma ser fruto de equalização incorreta, posicionamento errado das caixas em relação aos microfones ou falta de filtro notch. Com o alinhamento correto, o ganho de volume melhora muito sem gastar com novos equipamentos.</p>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm cursor-pointer" onclick="toggleFaq(this)">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-bold text-base">Como funciona o treinamento para a equipe de som voluntária?</h3>
+                                <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform duration-300"></i>
+                            </div>
+                            <p class="faq-content hidden text-sm text-slate-500 dark:text-slate-400 mt-4 leading-relaxed">O treinamento é 100% prático e ministrado no próprio sistema da sua igreja ou empresa. Ensinamos desde a passagem de som, ganho correto, uso de compressores, retornos de fone até o desligamento seguro para preservar os alto-falantes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SERVICES TAB ================= -->
+        <section id="tab-services" class="tab-content hidden animate-fade-in py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                    <span class="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Soluções Completas de Som</span>
+                    <h1 class="text-4xl font-black tracking-tight">Catálogo Geral de Serviços de Áudio</h1>
+                    <p class="text-slate-600 dark:text-slate-400">Atendimento presencial com equipamentos de análise RTA, calibradores de fase e ferramentas profissionais.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Service Card 1 -->
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-xl transition duration-300 flex flex-col justify-between">
+                        <div class="p-8 space-y-4">
+                            <div class="w-14 h-14 rounded-2xl bg-brand-50 dark:bg-brand-950 text-brand-600 flex items-center justify-center">
+                                <i data-lucide="sliders" class="w-7 h-7"></i>
+                            </div>
+                            <h3 class="text-xl font-bold">Ajuste & Mixagem em Mesa Digital</h3>
+                            <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">Estruturação correta de ganhos, filtros HPF, equalização paramétrica, roteamento de grupos DCA e mixers virtuais no iPad/Tablet.</p>
+                            <div class="pt-2 space-y-2 text-xs font-semibold text-slate-500">
+                                <div class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i><span>Criação de Cenas para Cultos / Shows</span></div>
+                                <div class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i><span>Configuração de Fones Individuais</span></div>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-slate-50 dark:bg-slate-950 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] uppercase font-bold text-slate-400 block">Investimento a partir de</span>
+                                <span class="text-lg font-black text-brand-600 dark:text-brand-400">R$ 300,00</span>
+                            </div>
+                            <button onclick="selectServiceForCalculator('Ajuste e Mixagem em Mesa de Som Digital', 300)" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs transition">Orçar Agora</button>
+                        </div>
+                    </div>
+
+                    <!-- Service Card 2 -->
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-xl transition duration-300 flex flex-col justify-between">
+                        <div class="p-8 space-y-4">
+                            <div class="w-14 h-14 rounded-2xl bg-brand-50 dark:bg-brand-950 text-brand-600 flex items-center justify-center">
+                                <i data-lucide="speaker" class="w-7 h-7"></i>
+                            </div>
+                            <h3 class="text-xl font-bold">Instalação & Alinhamento de Caixas</h3>
+                            <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">Instalação no teto/parede com suportes reforçados, cálculo de cobertura sonora, ajuste de fase entre caixas e subwoofers.</p>
+                            <div class="pt-2 space-y-2 text-xs font-semibold text-slate-500">
+                                <div class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i><span>Medição com Microfone de RTA</span></div>
+                                <div class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i><span>Distribuição uniforme em Academias/Igrejas</span></div>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-slate-50 dark:bg-slate-950 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] uppercase font-bold text-slate-400 block">Investimento a partir de</span>
+                                <span class="text-lg font-black text-brand-600 dark:text-brand-400">R$ 450,00</span>
+                            </div>
+                            <button onclick="selectServiceForCalculator('Instalação e Calibração de Caixas de Som', 450)" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs transition">Orçar Agora</button>
+                        </div>
+                    </div>
+
+                    <!-- Service Card 3 -->
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-xl transition duration-300 flex flex-col justify-between">
+                        <div class="p-8 space-y-4">
+                            <div class="w-14 h-14 rounded-2xl bg-brand-50 dark:bg-brand-950 text-brand-600 flex items-center justify-center">
+                                <i data-lucide="radio" class="w-7 h-7"></i>
+                            </div>
+                            <h3 class="text-xl font-bold">Eliminação de Ruídos & Microfonias</h3>
+                            <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">Diagnóstico de zumbidos de aterramento, chiados nos cabos, varredura de frequências de microfones sem fio e eliminação de realimentação.</p>
+                            <div class="pt-2 space-y-2 text-xs font-semibold text-slate-500">
+                                <div class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i><span>Isoladores Direct Box & Transformadores</span></div>
+                                <div class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i><span>Sinal 100% limpo e estável</span></div>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-slate-50 dark:bg-slate-950 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] uppercase font-bold text-slate-400 block">Investimento a partir de</span>
+                                <span class="text-lg font-black text-brand-600 dark:text-brand-400">R$ 250,00</span>
+                            </div>
+                            <button onclick="selectServiceForCalculator('Correção de Ruídos, Ground Loops & Microfonia', 250)" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs transition">Orçar Agora</button>
+                        </div>
+                    </div>
+
+                    <!-- Service Card 4 -->
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-xl transition duration-300 flex flex-col justify-between">
+                        <div class="p-8 space-y-4">
+                            <div class="w-14 h-14 rounded-2xl bg-brand-50 dark:bg-brand-950 text-brand-600 flex items-center justify-center">
+                                <i data-lucide="graduation-cap" class="w-7 h-7"></i>
+                            </div>
+                            <h3 class="text-xl font-bold">Treinamento de Equipe / Sonoplastas</h3>
+                            <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">Capacitação prática para operadores voluntários: passagem de som, conceitos de áudio, manuseio de microfones e solução rápida de problemas.</p>
+                            <div class="pt-2 space-y-2 text-xs font-semibold text-slate-500">
+                                <div class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i><span>Apostila em PDF + Suporte via WhatsApp</span></div>
+                                <div class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i><span>Treino no próprio equipamento do local</span></div>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-slate-50 dark:bg-slate-950 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] uppercase font-bold text-slate-400 block">Investimento a partir de</span>
+                                <span class="text-lg font-black text-brand-600 dark:text-brand-400">R$ 350,00</span>
+                            </div>
+                            <button onclick="selectServiceForCalculator('Treinamento Prático para Equipe de Som', 350)" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs transition">Orçar Agora</button>
+                        </div>
+                    </div>
+
+                    <!-- Service Card 5 -->
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-xl transition duration-300 flex flex-col justify-between">
+                        <div class="p-8 space-y-4">
+                            <div class="w-14 h-14 rounded-2xl bg-brand-50 dark:bg-brand-950 text-brand-600 flex items-center justify-center">
+                                <i data-lucide="activity" class="w-7 h-7"></i>
+                            </div>
+                            <h3 class="text-xl font-bold">Processadores DSP & Crossovers</h3>
+                            <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">Programação de gerenciadores de áudio (DBX DriveRack, Xilica, Behringer DCX): limiters de proteção para alto-falantes, cortes e alinhamentos de tempo.</p>
+                            <div class="pt-2 space-y-2 text-xs font-semibold text-slate-500">
+                                <div class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i><span>Proteção contra queima de alto-falantes</span></div>
+                                <div class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i><span>Ajuste de ganho e headroom</span></div>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-slate-50 dark:bg-slate-950 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] uppercase font-bold text-slate-400 block">Investimento a partir de</span>
+                                <span class="text-lg font-black text-brand-600 dark:text-brand-400">R$ 400,00</span>
+                            </div>
+                            <button onclick="selectServiceForCalculator('Calibração de Processadores DSP & Crossovers', 400)" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs transition">Orçar Agora</button>
+                        </div>
+                    </div>
+
+                    <!-- Service Card 6 -->
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-xl transition duration-300 flex flex-col justify-between">
+                        <div class="p-8 space-y-4">
+                            <div class="w-14 h-14 rounded-2xl bg-brand-50 dark:bg-brand-950 text-brand-600 flex items-center justify-center">
+                                <i data-lucide="waves" class="w-7 h-7"></i>
+                            </div>
+                            <h3 class="text-xl font-bold">Tratamento & Isolamento Acústico</h3>
+                            <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">Análise de tempo de reverberação, dimensionamento de painéis absorvedores, baffles e bass traps para ambientes com eco excessivo.</p>
+                            <div class="pt-2 space-y-2 text-xs font-semibold text-slate-500">
+                                <div class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i><span>Simulação acústica computacional</span></div>
+                                <div class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i><span>Material anti-chamas normatizado</span></div>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-slate-50 dark:bg-slate-950 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] uppercase font-bold text-slate-400 block">Investimento a partir de</span>
+                                <span class="text-lg font-black text-brand-600 dark:text-brand-400">R$ 600,00</span>
+                            </div>
+                            <button onclick="selectServiceForCalculator('Tratamento & Isolamento Acústico', 600)" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs transition">Orçar Agora</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= CALCULATOR TAB ================= -->
+        <section id="tab-calculator" class="tab-content hidden animate-fade-in py-16">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 space-y-3">
+                    <span class="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Simulador de Investimento em Som</span>
+                    <h1 class="text-3xl sm:text-4xl font-black tracking-tight">Calculadora de Serviços de Áudio</h1>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm max-w-xl mx-auto">Selecione o tipo de serviço, o porte do local ou quantidade de vias/caixas para gerar um orçamento estimado instantâneo.</p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-10">
+                    
+                    <!-- Controls Column -->
+                    <div class="lg:col-span-7 space-y-6">
+                        
+                        <!-- Service Dropdown -->
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">1. Selecione o Serviço Principal</label>
+                            <select id="calc-service" onchange="calculateBudget()" class="w-full px-4 py-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 font-semibold text-sm focus:ring-2 focus:ring-brand-500 outline-none transition">
+                                <option value="300">Ajuste e Mixagem em Mesa de Som Digital (Base R$ 300)</option>
+                                <option value="450">Instalação e Calibração de Caixas de Som (Base R$ 450)</option>
+                                <option value="250">Correção de Ruídos, Ground Loops & Microfonia (Base R$ 250)</option>
+                                <option value="350">Treinamento Prático para Equipe de Som (Base R$ 350)</option>
+                                <option value="400">Calibração de Processadores DSP & Crossovers (Base R$ 400)</option>
+                                <option value="600">Tratamento & Isolamento Acústico (Base R$ 600)</option>
+                            </select>
+                        </div>
+
+                        <!-- Quantity / Area Slider -->
+                        <div class="bg-slate-50 dark:bg-slate-800/60 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-700/60 space-y-3">
+                            <div class="flex justify-between items-center text-xs font-bold">
+                                <span class="uppercase text-slate-500">2. Porte do Local / N° de Caixas & Canais:</span>
+                                <span id="area-display" class="text-brand-600 dark:text-brand-400 font-black text-sm">4 Caixas / Canais</span>
+                            </div>
+                            <input type="range" id="calc-area" min="2" max="32" step="2" value="4" oninput="calculateBudget()" class="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-brand-600">
+                            <div class="flex justify-between text-[10px] text-slate-400 font-semibold">
+                                <span>2 Caixas / Pequeno</span>
+                                <span>16 Canais / Médio</span>
+                                <span>32+ Canais / Grande Templo</span>
+                            </div>
+                        </div>
+
+                        <!-- Quality Class -->
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">3. Complexidade & Tipo de Equipamento</label>
+                            <div class="grid grid-cols-3 gap-3">
+                                <button type="button" onclick="setQuality('standard')" id="btn-q-standard" class="quality-btn py-3 px-2 rounded-xl border border-brand-500 bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 font-bold text-xs text-center transition">
+                                    Padrão (Analog/XR)
+                                </button>
+                                <button type="button" onclick="setQuality('premium')" id="btn-q-premium" class="quality-btn py-3 px-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 font-bold text-xs text-center transition">
+                                    Digital Pro (+30%)
+                                </button>
+                                <button type="button" onclick="setQuality('executive')" id="btn-q-executive" class="quality-btn py-3 px-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 font-bold text-xs text-center transition">
+                                    Line Array/Multi (+60%)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Optionals Checkboxes -->
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">4. Serviços Adicionais Recomendados</label>
+                            <div class="space-y-2.5">
+                                <label class="flex items-center justify-between p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition">
+                                    <div class="flex items-center space-x-3">
+                                        <input type="checkbox" id="opt-urgency" value="150" onchange="calculateBudget()" class="w-4 h-4 text-brand-600 rounded focus:ring-brand-500">
+                                        <span class="text-xs sm:text-sm font-semibold">Atendimento Emergencial (Até 24h para Culto/Evento)</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-brand-600 dark:text-brand-400">+ R$ 150,00</span>
+                                </label>
+                                
+                                <label class="flex items-center justify-between p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition">
+                                    <div class="flex items-center space-x-3">
+                                        <input type="checkbox" id="opt-warranty" value="200" onchange="calculateBudget()" class="w-4 h-4 text-brand-600 rounded focus:ring-brand-500">
+                                        <span class="text-xs sm:text-sm font-semibold">Passagem de Som & Acompanhamento no 1° Evento</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-brand-600 dark:text-brand-400">+ R$ 200,00</span>
+                                </label>
+
+                                <label class="flex items-center justify-between p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition">
+                                    <div class="flex items-center space-x-3">
+                                        <input type="checkbox" id="opt-clean" value="120" onchange="calculateBudget()" class="w-4 h-4 text-brand-600 rounded focus:ring-brand-500">
+                                        <span class="text-xs sm:text-sm font-semibold">Organização & Rotulagem de Medusa / Rack</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-brand-600 dark:text-brand-400">+ R$ 120,00</span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Live Summary Card -->
+                    <div class="lg:col-span-5 bg-gradient-to-b from-brand-950 via-brand-900 to-slate-900 text-white p-7 rounded-3xl flex flex-col justify-between shadow-xl space-y-6 relative overflow-hidden border border-brand-800/50">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl"></div>
+
+                        <div class="space-y-2 relative z-10">
+                            <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-white/10 text-cyan-300 text-[10px] font-bold uppercase">
+                                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                                <span>Cálculo Áudio Instantâneo</span>
+                            </div>
+                            <h3 class="text-2xl font-black">Estimativa Final</h3>
+                            <p class="text-slate-300 text-xs leading-relaxed">Valores estimados para mão de obra especializada e medição técnica presencial.</p>
+                        </div>
+
+                        <div class="py-6 border-y border-white/10 space-y-3 relative z-10 text-xs">
+                            <div class="flex justify-between text-brand-100">
+                                <span>Serviço Base + Escala de Canais:</span>
+                                <span id="summary-base" class="font-bold text-white">R$ 0,00</span>
+                            </div>
+                            <div class="flex justify-between text-brand-100">
+                                <span>Nível do Equipamento:</span>
+                                <span id="summary-quality" class="font-bold text-white">PADRÃO (1.0x)</span>
+                            </div>
+                            <div class="flex justify-between text-brand-100">
+                                <span>Serviços Adicionais:</span>
+                                <span id="summary-options" class="font-bold text-white">R$ 0,00</span>
+                            </div>
+                            <div class="pt-4 border-t border-white/10 flex justify-between items-baseline">
+                                <span class="font-extrabold text-sm uppercase">Total Estimado:</span>
+                                <span id="summary-total" class="text-3xl font-black text-emerald-400">R$ 0,00</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 relative z-10">
+                            <button onclick="sendBudgetToWhatsApp()" class="w-full py-4 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-sm shadow-lg shadow-emerald-500/20 transition flex items-center justify-center space-x-2">
+                                <i data-lucide="message-square" class="w-4 h-4"></i>
+                                <span>Enviar no WhatsApp com Detalhes</span>
+                            </button>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="proceedToBookingFromCalculator()" class="py-3 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition text-center">
+                                    Agendar Visita
+                                </button>
+                                <button onclick="saveQuoteLocally()" class="py-3 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition text-center">
+                                    Salvar Orçamento
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= BOOKING TAB ================= -->
+        <section id="tab-booking" class="tab-content hidden animate-fade-in py-16">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 space-y-3">
+                    <span class="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Atendimento Agendado</span>
+                    <h1 class="text-3xl sm:text-4xl font-black tracking-tight">Agendar Visita / Avaliação Técnica</h1>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm">Escolha a melhor data. Nosso técnico irá ao local com analisador de áudio para mapear suas necessidades.</p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl p-6 sm:p-10">
+                    <form id="booking-form" onsubmit="handleBookingSubmit(event)" class="space-y-6">
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Seu Nome / Responsável *</label>
+                                <input type="text" id="bk-name" required placeholder="Ex: Pr. Carlos / Gabriel Sonoplasta" class="w-full px-4 py-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent font-semibold text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">WhatsApp de Contato *</label>
+                                <input type="tel" id="bk-phone" required placeholder="(44) 99999-9999" class="w-full px-4 py-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent font-semibold text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">E-mail *</label>
+                                <input type="email" id="bk-email" required placeholder="seu@email.com" class="w-full px-4 py-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent font-semibold text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Serviço Desejado *</label>
+                                <select id="bk-service" class="w-full px-4 py-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent font-semibold text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                                    <option value="Ajuste em Mesa de Som Digital">Ajuste em Mesa de Som Digital</option>
+                                    <option value="Instalação e Calibração de Caixas">Instalação e Calibração de Caixas</option>
+                                    <option value="Correção de Microfonia & Ruídos">Correção de Microfonia & Ruídos</option>
+                                    <option value="Treinamento de Equipe / Voluntários">Treinamento de Equipe / Voluntários</option>
+                                    <option value="Programação de Processador DSP">Programação de Processador DSP</option>
+                                    <option value="Tratamento Acústico da Sala">Tratamento Acústico da Sala</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Data Pretendida *</label>
+                                <input type="date" id="bk-date" required class="w-full px-4 py-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent font-semibold text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Período *</label>
+                                <select id="bk-time" class="w-full px-4 py-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent font-semibold text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                                    <option value="Manhã (08h00 - 12h00)">Manhã (08h00 - 12h00)</option>
+                                    <option value="Tarde (13h30 - 17h30)">Tarde (13h30 - 17h30)</option>
+                                    <option value="Noite / Horário de Ensaio (18h30 - 21h30)">Noite / Horário de Ensaio (18h30 - 21h30)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Nome do Local & Endereço Completo *</label>
+                            <input type="text" id="bk-address" required placeholder="Ex: Igreja Evangélica - Av. Brasil, 1500 - Maringá/PR" class="w-full px-4 py-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent font-semibold text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Modelos dos Equipamentos / Observações</label>
+                            <textarea id="bk-notes" rows="3" placeholder="Ex: Possuímos uma mesa Behringer X32, 4 caixas ativas RCF e 2 subs. O som está distorcendo..." class="w-full px-4 py-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent font-semibold text-sm focus:ring-2 focus:ring-brand-500 outline-none"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-black text-sm shadow-xl shadow-brand-600/30 transition transform active:scale-95 flex items-center justify-center space-x-2">
+                            <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                            <span>Confirmar Agendamento & Gerar Comprovante</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PORTFOLIO / GALLERY TAB ================= -->
+        <section id="tab-gallery" class="tab-content hidden animate-fade-in py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-12 space-y-4">
+                    <span class="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Projetos Executados</span>
+                    <h1 class="text-4xl font-black tracking-tight">Galeria de Sistemas de Som</h1>
+                    <p class="text-slate-600 dark:text-slate-400">Confira fotos reais de regulagens de mesas, instalações de caixas, racks e alinhamentos de áudio.</p>
+                </div>
+
+                <!-- Gallery Category Filter Bar -->
+                <div class="flex flex-wrap items-center justify-center gap-2 mb-12">
+                    <button onclick="filterGallery('all')" class="gallery-filter-btn active px-5 py-2.5 rounded-2xl border border-brand-500 bg-brand-600 text-white font-bold text-xs transition">Todos os Projetos</button>
+                    <button onclick="filterGallery('mesas')" class="gallery-filter-btn px-5 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 font-bold text-xs hover:border-brand-500 transition">Mesas & Mixagem</button>
+                    <button onclick="filterGallery('igrejas')" class="gallery-filter-btn px-5 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 font-bold text-xs hover:border-brand-500 transition">Igrejas & Templos</button>
+                    <button onclick="filterGallery('academias')" class="gallery-filter-btn px-5 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 font-bold text-xs hover:border-brand-500 transition">Academias & Lojas</button>
+                    <button onclick="filterGallery('linearray')" class="gallery-filter-btn px-5 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 font-bold text-xs hover:border-brand-500 transition">Line Array & PA</button>
+                </div>
+
+                <!-- Gallery Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="gallery-grid">
+                    
+                    <!-- Item 1 -->
+                    <div class="gallery-item mesas bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-2xl transition duration-500 group">
+                        <div class="h-64 overflow-hidden relative cursor-pointer" onclick="openLightbox('https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop', 'Configuração Behringer X32', 'Estruturação de DCAs, Roteamento de Fones In-Ear e Cenas para Cultos.')">
+                            <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=600&auto=format&fit=crop" alt="Mesa de Som Digital" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            <span class="absolute top-4 right-4 bg-brand-600/90 backdrop-blur-md text-white text-[10px] font-black uppercase px-3 py-1 rounded-full">Mesa Digital</span>
+                        </div>
+                        <div class="p-6 space-y-2">
+                            <h3 class="text-lg font-bold">Estruturação de Mesa Digital X32</h3>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">Configuração completa de presets, compressores por canal e roteamento via tablet sem fio.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="gallery-item igrejas bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-2xl transition duration-500 group">
+                        <div class="h-64 overflow-hidden relative cursor-pointer" onclick="openLightbox('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop', 'Sonorização de Templo para 800 pessoas', 'Alinhamento por RTA e caixas de alta inteligibilidade.')">
+                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" alt="Sonorização Igreja" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            <span class="absolute top-4 right-4 bg-brand-600/90 backdrop-blur-md text-white text-[10px] font-black uppercase px-3 py-1 rounded-full">Igrejas</span>
+                        </div>
+                        <div class="p-6 space-y-2">
+                            <h3 class="text-lg font-bold">Sonorização Templo Principal</h3>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">Eliminação de microfonias na pregação e alinhamento do subwoofer em corte Cardióide.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="gallery-item academias bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-2xl transition duration-500 group">
+                        <div class="h-64 overflow-hidden relative cursor-pointer" onclick="openLightbox('https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=1200&auto=format&fit=crop', 'Som Ambientes em Academia Multi-zonas', 'Distribuição de 16 caixas de som em 4 áreas independentes.')">
+                            <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=600&auto=format&fit=crop" alt="Som de Academia" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            <span class="absolute top-4 right-4 bg-brand-600/90 backdrop-blur-md text-white text-[10px] font-black uppercase px-3 py-1 rounded-full">Academias</span>
+                        </div>
+                        <div class="p-6 space-y-2">
+                            <h3 class="text-lg font-bold">Sistema Multizona em Academia</h3>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">Instalação de caixas JBL ambientadas com controle individual de volume por sala de aula.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="gallery-item linearray bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-2xl transition duration-500 group">
+                        <div class="h-64 overflow-hidden relative cursor-pointer" onclick="openLightbox('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=1200&auto=format&fit=crop', 'Alinhamento Line Array e Rack DSP', 'Calibração de tempo de delay e resposta de frequência por software.')">
+                            <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=600&auto=format&fit=crop" alt="Line Array PA" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            <span class="absolute top-4 right-4 bg-brand-600/90 backdrop-blur-md text-white text-[10px] font-black uppercase px-3 py-1 rounded-full">Line Array</span>
+                        </div>
+                        <div class="p-6 space-y-2">
+                            <h3 class="text-lg font-bold">Sistema Line Array Compacto</h3>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">Cálculo de cobertura angular e calibração de crossover com processador DBX DriveRack.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= ADMIN DASHBOARD TAB ================= -->
+        <section id="tab-admin" class="tab-content hidden animate-fade-in py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Admin Header -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 pb-6 border-b border-slate-200 dark:border-slate-800 gap-4">
+                    <div>
+                        <div class="inline-flex items-center space-x-2 text-xs font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wider mb-1">
+                            <i data-lucide="shield-check" class="w-4 h-4"></i>
+                            <span>Painel de Gestão Opus Áudio</span>
+                        </div>
+                        <h1 class="text-3xl font-black tracking-tight">Administração de Chamados & Visitas</h1>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <button onclick="exportBookingsToCSV()" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition flex items-center space-x-2">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                            <span>Exportar CSV</span>
+                        </button>
+                        <button onclick="loadAdminData()" class="px-4 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 font-bold text-xs transition flex items-center space-x-2">
+                            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                            <span>Atualizar</span>
+                        </button>
+                        <button onclick="logoutAdmin()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600 text-white font-bold text-xs transition flex items-center space-x-1.5">
+                            <i data-lucide="log-out" class="w-4 h-4"></i>
+                            <span>Sair (Logout)</span>
+                        </button>
+                        <button onclick="clearAllData()" class="px-4 py-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 hover:bg-rose-100 font-bold text-xs transition">
+                            Limpar Banco Local
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Metric Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+                    <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center space-x-4">
+                        <div class="p-4 rounded-2xl bg-brand-50 dark:bg-brand-950 text-brand-600">
+                            <i data-lucide="calendar-check-2" class="w-7 h-7"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Agendamentos</p>
+                            <p id="stat-bookings" class="text-3xl font-black">0</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center space-x-4">
+                        <div class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600">
+                            <i data-lucide="calculator" class="w-7 h-7"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Simulações Salvas</p>
+                            <p id="stat-quotes" class="text-3xl font-black">0</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center space-x-4">
+                        <div class="p-4 rounded-2xl bg-cyan-50 dark:bg-cyan-950 text-cyan-500">
+                            <i data-lucide="activity" class="w-7 h-7"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Status do Sistema</p>
+                            <p class="text-sm font-black text-emerald-500 flex items-center space-x-1.5 mt-1">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span>Operacional (RTA)</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bookings Data Table -->
+                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden mb-12">
+                    <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <h3 class="text-lg font-black">Agendamentos Registrados</h3>
+                        <input type="text" id="admin-search-booking" oninput="filterAdminTables()" placeholder="Buscar responsável ou local..." class="px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-xs font-semibold outline-none w-full sm:w-64">
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-50 dark:bg-slate-800/60 text-slate-400 font-bold uppercase tracking-wider">
+                                    <th class="p-4">Cliente / Igreja</th>
+                                    <th class="p-4">Serviço Áudio</th>
+                                    <th class="p-4">Data / Horário</th>
+                                    <th class="p-4">Endereço</th>
+                                    <th class="p-4">Contato</th>
+                                    <th class="p-4">Status</th>
+                                    <th class="p-4 text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-bookings-list" class="divide-y divide-slate-100 dark:divide-slate-800">
+                                <!-- Populated Dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Saved Quotes Table -->
+                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden">
+                    <div class="p-6 border-b border-slate-200 dark:border-slate-800">
+                        <h3 class="text-lg font-black">Orçamentos Simulados no Site</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-50 dark:bg-slate-800/60 text-slate-400 font-bold uppercase tracking-wider">
+                                    <th class="p-4">Serviço Selecionado</th>
+                                    <th class="p-4">Porte / Canais</th>
+                                    <th class="p-4">Adicionais</th>
+                                    <th class="p-4">Valor Estimado</th>
+                                    <th class="p-4">Data Simulação</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-quotes-list" class="divide-y divide-slate-100 dark:divide-slate-800">
+                                <!-- Populated Dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FLOATING WHATSAPP CTA -->
+    <a href="https://wa.me/554498417019?text=Olá!%20Vim%20pelo%20site%20da%20Opus%20Mídia%20House%20e%20preciso%20de%20ajuda%20com%20meu%20som." target="_blank" class="fixed bottom-6 right-6 z-40 bg-emerald-500 hover:bg-emerald-600 text-white p-4 rounded-full shadow-2xl transition duration-300 transform hover:scale-110 flex items-center justify-center group" title="Atendimento de Som via WhatsApp">
+        <i data-lucide="message-square" class="w-7 h-7"></i>
+        <span class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 whitespace-nowrap text-xs font-bold pl-0 group-hover:pl-2">Falar com Técnico de Som</span>
+    </a>
+
+    <!-- BOOKING RECEIPT MODAL -->
+    <div id="receipt-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-md hidden flex items-center justify-center p-4 animate-fade-in">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-xl w-full p-8 shadow-2xl relative space-y-6">
+            <button onclick="closeReceiptModal()" class="absolute top-6 right-6 p-2 rounded-xl text-slate-400 hover:text-slate-600 transition">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <div id="printable-receipt" class="space-y-6">
+                <div class="flex items-center space-x-3 pb-6 border-b border-slate-100 dark:border-slate-800">
+                    <div class="w-10 h-10 bg-brand-600 text-white rounded-xl flex items-center justify-center font-bold">
+                        <i data-lucide="sliders" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-black">Comprovante de Agendamento</h2>
+                        <p class="text-xs text-slate-400">Opus Mídia House | Engenharia de Som</p>
+                    </div>
+                </div>
+
+                <div class="space-y-3 text-xs sm:text-sm">
+                    <div class="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
+                        <span class="text-slate-400">Protocolo:</span>
+                        <span id="rc-protocol" class="font-extrabold font-mono text-brand-600">AUDIO-0000</span>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
+                        <span class="text-slate-400">Responsável:</span>
+                        <span id="rc-name" class="font-bold">---</span>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
+                        <span class="text-slate-400">Serviço Pretendido:</span>
+                        <span id="rc-service" class="font-bold text-brand-600">---</span>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
+                        <span class="text-slate-400">Data & Turno:</span>
+                        <span id="rc-datetime" class="font-bold">---</span>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
+                        <span class="text-slate-400">Local / Endereço:</span>
+                        <span id="rc-address" class="font-bold text-right">---</span>
+                    </div>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-xs text-slate-500 leading-relaxed">
+                    <p class="font-bold text-slate-700 dark:text-slate-300 mb-1">Recomendações Pró-Visita:</p>
+                    <p>Certifique-se de que a mesa de som e a energia elétrica do local estejam acessíveis para a conexão do analisador de áudio RTA.</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3 pt-2">
+                <button onclick="window.print()" class="flex-1 py-3 px-4 rounded-xl border border-slate-300 dark:border-slate-700 font-bold text-xs hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center justify-center space-x-2">
+                    <i data-lucide="printer" class="w-4 h-4"></i>
+                    <span>Imprimir Comprovante</span>
+                </button>
+                <button onclick="closeReceiptModal()" class="flex-1 py-3 px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs transition">
+                    Concluir
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GOOGLE-STYLE LOGIN MODAL FOR ADMIN ACCESS -->
+    <div id="google-login-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-md hidden flex items-center justify-center p-4 animate-fade-in">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-md w-full p-8 shadow-2xl relative space-y-6">
+            <button onclick="closeLoginModal()" class="absolute top-6 right-6 p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <!-- Google Style Brand Header -->
+            <div class="text-center space-y-2">
+                <div class="inline-flex items-center justify-center space-x-1 mb-2">
+                    <span class="text-2xl font-black text-blue-500">G</span>
+                    <span class="text-2xl font-black text-red-500">o</span>
+                    <span class="text-2xl font-black text-amber-500">o</span>
+                    <span class="text-2xl font-black text-blue-500">g</span>
+                    <span class="text-2xl font-black text-green-500">l</span>
+                    <span class="text-2xl font-black text-red-500">e</span>
+                </div>
+                <h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Fazer login</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Usar sua Conta do Administrador da Opus Mídia</p>
+            </div>
+
+            <!-- Login Form Container -->
+            <form id="google-login-form" onsubmit="handleAdminLogin(event)" class="space-y-4 pt-2">
+                
+                <!-- Alert Box for Error -->
+                <div id="login-error-alert" class="hidden p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900/60 text-rose-600 dark:text-rose-400 text-xs font-semibold flex items-center space-x-2">
+                    <i data-lucide="alert-circle" class="w-4 h-4 shrink-0"></i>
+                    <span id="login-error-msg">Usuário ou senha incorretos.</span>
+                </div>
+
+                <!-- Step 1: User / Email -->
+                <div id="login-step-1" class="space-y-3">
+                    <div class="relative">
+                        <input type="text" id="login-username" required placeholder=" " class="peer w-full px-4 py-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent font-medium text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition">
+                        <label for="login-username" class="absolute left-4 top-3.5 text-xs text-slate-400 font-medium transition-all duration-200 pointer-events-none peer-focus:-top-2.5 peer-focus:left-3 peer-focus:bg-white dark:peer-focus:bg-slate-900 peer-focus:px-1 peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2.5 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white dark:peer-[:not(:placeholder-shown)]:bg-slate-900 peer-[:not(:placeholder-shown)]:px-1 peer-[:not(:placeholder-shown)]:text-blue-500">E-mail ou nome de usuário</label>
+                    </div>
+                    <p class="text-[11px] text-slate-400">Dica de Acesso: Usuário <span class="font-bold text-slate-600 dark:text-slate-300">admin</span></p>
+                </div>
+
+                <!-- Step 2: Password -->
+                <div id="login-step-2" class="space-y-3">
+                    <div class="relative">
+                        <input type="password" id="login-password" required placeholder=" " class="peer w-full px-4 py-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent font-medium text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition pr-10">
+                        <label for="login-password" class="absolute left-4 top-3.5 text-xs text-slate-400 font-medium transition-all duration-200 pointer-events-none peer-focus:-top-2.5 peer-focus:left-3 peer-focus:bg-white dark:peer-focus:bg-slate-900 peer-focus:px-1 peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2.5 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white dark:peer-[:not(:placeholder-shown)]:bg-slate-900 peer-[:not(:placeholder-shown)]:px-1 peer-[:not(:placeholder-shown)]:text-blue-500">Digite sua senha</label>
+                        <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 top-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                            <i data-lucide="eye" id="eye-icon" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <p class="text-[11px] text-slate-400">Dica de Acesso: Senha <span class="font-bold text-slate-600 dark:text-slate-300">admin123</span></p>
+                </div>
+
+                <div class="flex items-center justify-between pt-4">
+                    <button type="button" onclick="closeLoginModal()" class="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition shadow-md shadow-blue-500/20 flex items-center space-x-2">
+                        <span>Acessar Painel</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </form>
+
+            <div class="pt-4 border-t border-slate-100 dark:border-slate-800 text-center">
+                <span class="text-[11px] text-slate-400">Sessão protegida por criptografia de dados locais.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX MODAL FOR GALLERY -->
+    <div id="lightbox-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4 animate-fade-in" onclick="closeLightbox()">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl relative" onclick="event.stopPropagation()">
+            <button onclick="closeLightbox()" class="absolute top-4 right-4 z-10 bg-black/50 text-white p-2 rounded-full hover:bg-black/80 transition">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="h-80 sm:h-96 overflow-hidden">
+                <img id="lb-image" src="" alt="Projeto de Áudio" class="w-full h-full object-cover">
+            </div>
+            <div class="p-8 space-y-2">
+                <h3 id="lb-title" class="text-xl font-black">---</h3>
+                <p id="lb-desc" class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed">---</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN FOOTER -->
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-16 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+            
+            <div class="space-y-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 bg-brand-600 rounded-xl flex items-center justify-center text-white">
+                        <i data-lucide="sliders" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-xl font-black bg-gradient-to-r from-brand-600 to-cyan-500 bg-clip-text text-transparent">Opus Mídia House</span>
+                </div>
+                <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">
+                    Engenharia de som, alinhamento de mesas digitais, calibração acústica e treinamento profissional de sonoplastia em Maringá e Região.
+                </p>
+            </div>
+
+            <div>
+                <h4 class="font-extrabold text-xs uppercase tracking-wider text-slate-900 dark:text-slate-100 mb-4">Navegação</h4>
+                <ul class="space-y-2.5 text-xs text-slate-500 dark:text-slate-400 font-medium">
+                    <li><button onclick="switchTab('home')" class="hover:text-brand-600 transition">Início</button></li>
+                    <li><button onclick="switchTab('services')" class="hover:text-brand-600 transition">Serviços de Som</button></li>
+                    <li><button onclick="switchTab('calculator')" class="hover:text-brand-600 transition">Simulador de Orçamento</button></li>
+                    <li><button onclick="switchTab('gallery')" class="hover:text-brand-600 transition">Portfólio de Áudio</button></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-extrabold text-xs uppercase tracking-wider text-slate-900 dark:text-slate-100 mb-4">Especialidades</h4>
+                <ul class="space-y-2.5 text-xs text-slate-500 dark:text-slate-400 font-medium">
+                    <li>Regulagem Behringer X32 & Yamaha</li>
+                    <li>Eliminação de Microfonias & Ruídos</li>
+                    <li>Sonorização para Igrejas & Templos</li>
+                    <li>Alinhamento RTA (SMAART) & Processadores</li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-extrabold text-xs uppercase tracking-wider text-slate-900 dark:text-slate-100 mb-4">Contato Técnico</h4>
+                <ul class="space-y-3 text-xs text-slate-500 dark:text-slate-400 font-medium">
+                    <li class="flex items-center space-x-2.5">
+                        <i data-lucide="phone" class="w-4 h-4 text-brand-600"></i>
+                        <span>(44) 9841-7019</span>
+                    </li>
+                    <li class="flex items-center space-x-2.5">
+                        <i data-lucide="mail" class="w-4 h-4 text-brand-600"></i>
+                        <span>victor.silva.sanches@escola.pr.gov.br</span>
+                    </li>
+                    <li class="flex items-center space-x-2.5">
+                        <i data-lucide="map-pin" class="w-4 h-4 text-brand-600"></i>
+                        <span>Maringá, PR - Brasil</span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 border-t border-slate-100 dark:border-slate-800 text-center text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p>&copy; 2026 Opus Mídia House — Engenharia de Som & Soluções Acústicas. Todos os direitos reservados.</p>
+            <p class="text-[10px]">Maringá - PR | Técnico de Som Certificado</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Init Lucide Icons
+        lucide.createIcons();
+
+        // State Variables
+        let currentQuality = 'standard';
+        let qualityMultiplier = 1.0;
+
+        // Admin Auth System
+        function isAdminLoggedIn() {
+            return localStorage.getItem('opus_admin_session') === 'true';
+        }
+
+        function handleAdminTabClick() {
+            if (isAdminLoggedIn()) {
+                switchTab('admin');
+            } else {
+                openLoginModal();
+            }
+        }
+
+        function openLoginModal() {
+            document.getElementById('google-login-modal').classList.remove('hidden');
+            document.getElementById('login-error-alert').classList.add('hidden');
+            document.getElementById('login-username').focus();
+        }
+
+        function closeLoginModal() {
+            document.getElementById('google-login-modal').classList.add('hidden');
+        }
+
+        function togglePasswordVisibility() {
+            const pwdInput = document.getElementById('login-password');
+            const eyeIcon = document.getElementById('eye-icon');
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                eyeIcon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                pwdInput.type = 'password';
+                eyeIcon.setAttribute('data-lucide', 'eye');
+            }
+            lucide.createIcons();
+        }
+
+        function handleAdminLogin(event) {
+            event.preventDefault();
+            const user = document.getElementById('login-username').value.trim();
+            const pass = document.getElementById('login-password').value.trim();
+            const errorAlert = document.getElementById('login-error-alert');
+
+            if (user === 'admin' && pass === 'admin123') {
+                localStorage.setItem('opus_admin_session', 'true');
+                errorAlert.classList.add('hidden');
+                closeLoginModal();
+                switchTab('admin');
+                showNotification('Login efetuado com sucesso! Bem-vindo ao Painel.');
+            } else {
+                errorAlert.classList.remove('hidden');
+                document.getElementById('login-error-msg').innerText = 'Credenciais inválidas. Verifique o usuário e senha.';
+            }
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem('opus_admin_session');
+            showNotification('Sessão encerrada com sucesso.');
+            switchTab('home');
+        }
+
+        // Dark Mode Logic with LocalStorage Sync
+        function initTheme() {
+            const savedTheme = localStorage.getItem('opus_audio_theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+            updateThemeIcon();
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('opus_audio_theme', isDark ? 'dark' : 'light');
+            updateThemeIcon();
+        }
+
+        function updateThemeIcon() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const icon = document.getElementById('theme-icon');
+            if(icon) {
+                icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+                lucide.createIcons();
+            }
+        }
+
+        // Navigation Switcher
+        function switchTab(tabId) {
+            if (tabId === 'admin' && !isAdminLoggedIn()) {
+                openLoginModal();
+                return;
+            }
+
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById('tab-' + tabId);
+            if (target) {
+                target.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if(btn.dataset.target === tabId) {
+                    btn.classList.add('text-brand-600', 'dark:text-brand-400', 'font-bold');
+                    btn.classList.remove('text-slate-600', 'dark:text-slate-300');
+                } else {
+                    btn.classList.remove('text-brand-600', 'dark:text-brand-400', 'font-bold');
+                    btn.classList.add('text-slate-600', 'dark:text-slate-300');
+                }
+            });
+
+            if(tabId === 'admin') loadAdminData();
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // FAQ Toggle Accordion
+        function toggleFaq(element) {
+            const content = element.querySelector('.faq-content');
+            const icon = element.querySelector('i');
+            content.classList.toggle('hidden');
+            if(icon) icon.classList.toggle('rotate-180');
+        }
+
+        // Quality Class Selector for Calculator
+        function setQuality(quality) {
+            currentQuality = quality;
+            document.querySelectorAll('.quality-btn').forEach(btn => {
+                btn.classList.remove('border-brand-500', 'bg-brand-50', 'dark:bg-brand-950/60', 'text-brand-700', 'dark:text-brand-300');
+                btn.classList.add('border-slate-300', 'dark:border-slate-700');
+            });
+
+            const activeBtn = document.getElementById('btn-q-' + quality);
+            if(activeBtn) {
+                activeBtn.classList.remove('border-slate-300', 'dark:border-slate-700');
+                activeBtn.classList.add('border-brand-500', 'bg-brand-50', 'dark:bg-brand-950/60', 'text-brand-700', 'dark:text-brand-300');
+            }
+
+            if(quality === 'standard') qualityMultiplier = 1.0;
+            if(quality === 'premium') qualityMultiplier = 1.3;
+            if(quality === 'executive') qualityMultiplier = 1.6;
+
+            calculateBudget();
+        }
+
+        // Budget Calculation Logic for Audio
+        function calculateBudget() {
+            const basePrice = parseFloat(document.getElementById('calc-service').value) || 0;
+            const channels = parseFloat(document.getElementById('calc-area').value) || 4;
+            document.getElementById('area-display').innerText = channels + ' Caixas / Canais';
+
+            // Scale Factor Calculation
+            const scaleFactor = 1 + ((channels - 2) * 0.05);
+            const baseTotal = basePrice * scaleFactor * qualityMultiplier;
+
+            let optionsTotal = 0;
+            if(document.getElementById('opt-urgency').checked) optionsTotal += 150;
+            if(document.getElementById('opt-warranty').checked) optionsTotal += 200;
+            if(document.getElementById('opt-clean').checked) optionsTotal += 120;
+
+            const finalTotal = baseTotal + optionsTotal;
+
+            document.getElementById('summary-base').innerText = 'R$ ' + baseTotal.toFixed(2).replace('.', ',');
+            document.getElementById('summary-quality').innerText = currentQuality.toUpperCase() + ' (' + qualityMultiplier.toFixed(1) + 'x)';
+            document.getElementById('summary-options').innerText = 'R$ ' + optionsTotal.toFixed(2).replace('.', ',');
+            document.getElementById('summary-total').innerText = 'R$ ' + finalTotal.toFixed(2).replace('.', ',');
+
+            return {
+                serviceName: document.getElementById('calc-service').options[document.getElementById('calc-service').selectedIndex].text,
+                channels: channels,
+                quality: currentQuality,
+                total: 'R$ ' + finalTotal.toFixed(2).replace('.', ',')
+            };
+        }
+
+        function selectServiceForCalculator(serviceName, price) {
+            const select = document.getElementById('calc-service');
+            for(let i=0; i<select.options.length; i++) {
+                if(select.options[i].value == price || select.options[i].text.includes(serviceName)) {
+                    select.selectedIndex = i;
+                    break;
+                }
+            }
+            calculateBudget();
+            switchTab('calculator');
+        }
+
+        function sendBudgetToWhatsApp() {
+            const calc = calculateBudget();
+            const text = `Olá Opus Mídia House! Fiz uma simulação de áudio pelo site:\n\n*Serviço:* ${calc.serviceName}\n*Quantidade:* ${calc.channels} Caixas/Canais\n*Nível de Equipamento:* ${calc.quality.toUpperCase()}\n*Total Estimado:* ${calc.total}\n\nGostaria de agendar uma visita técnica!`;
+            window.open(`https://wa.me/554498417019?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        function saveQuoteLocally() {
+            const calc = calculateBudget();
+            const quoteObj = {
+                id: Date.now(),
+                service: calc.serviceName.split('(')[0].trim(),
+                area: calc.channels + ' Canais - ' + calc.quality.toUpperCase(),
+                options: 'Serviços Opcionais Aplicados',
+                total: calc.total,
+                date: new Date().toLocaleDateString('pt-BR')
+            };
+
+            let quotes = JSON.parse(localStorage.getItem('opus_audio_quotes') || '[]');
+            quotes.push(quoteObj);
+            localStorage.setItem('opus_audio_quotes', JSON.stringify(quotes));
+
+            showNotification('Orçamento de Som salvo no painel!');
+        }
+
+        function proceedToBookingFromCalculator() {
+            switchTab('booking');
+        }
+
+        // Booking Submission Handling
+        function handleBookingSubmit(event) {
+            event.preventDefault();
+
+            const protocol = 'AUDIO-' + Math.floor(1000 + Math.random() * 9000);
+            const bookingObj = {
+                id: Date.now(),
+                protocol: protocol,
+                name: document.getElementById('bk-name').value,
+                phone: document.getElementById('bk-phone').value,
+                email: document.getElementById('bk-email').value,
+                service: document.getElementById('bk-service').value,
+                date: document.getElementById('bk-date').value,
+                time: document.getElementById('bk-time').value,
+                address: document.getElementById('bk-address').value,
+                notes: document.getElementById('bk-notes').value || 'Sem observações',
+                status: 'Pendente',
+                created: new Date().toLocaleDateString('pt-BR')
+            };
+
+            let bookings = JSON.parse(localStorage.getItem('opus_audio_bookings') || '[]');
+            bookings.push(bookingObj);
+            localStorage.setItem('opus_audio_bookings', JSON.stringify(bookings));
+
+            // Populate Modal Receipt
+            document.getElementById('rc-protocol').innerText = protocol;
+            document.getElementById('rc-name').innerText = bookingObj.name;
+            document.getElementById('rc-service').innerText = bookingObj.service;
+            document.getElementById('rc-datetime').innerText = bookingObj.date + ' — ' + bookingObj.time;
+            document.getElementById('rc-address').innerText = bookingObj.address;
+
+            document.getElementById('receipt-modal').classList.remove('hidden');
+            document.getElementById('booking-form').reset();
+        }
+
+        function closeReceiptModal() {
+            document.getElementById('receipt-modal').classList.add('hidden');
+            switchTab('home');
+        }
+
+        // Gallery Filter Logic
+        function filterGallery(category) {
+            document.querySelectorAll('.gallery-filter-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white', 'border-brand-500');
+                btn.classList.add('bg-white', 'dark:bg-slate-900', 'border-slate-200', 'dark:border-slate-800');
+            });
+            event.target.classList.add('bg-brand-600', 'text-white', 'border-brand-500');
+
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                if(category === 'all' || item.classList.contains(category)) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        }
+
+        // Lightbox Modal
+        function openLightbox(imgSrc, title, desc) {
+            document.getElementById('lb-image').src = imgSrc;
+            document.getElementById('lb-title').innerText = title;
+            document.getElementById('lb-desc').innerText = desc;
+            document.getElementById('lightbox-modal').classList.remove('hidden');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox-modal').classList.add('hidden');
+        }
+
+        // Admin Panel Data Loader
+        function loadAdminData() {
+            const bookings = JSON.parse(localStorage.getItem('opus_audio_bookings') || '[]');
+            const quotes = JSON.parse(localStorage.getItem('opus_audio_quotes') || '[]');
+
+            document.getElementById('stat-bookings').innerText = bookings.length;
+            document.getElementById('stat-quotes').innerText = quotes.length;
+
+            renderBookingsTable(bookings);
+            renderQuotesTable(quotes);
+        }
+
+        function renderBookingsTable(data) {
+            const list = document.getElementById('admin-bookings-list');
+            if(data.length === 0) {
+                list.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-400">Nenhum agendamento de som registrado.</td></tr>`;
+                return;
+            }
+
+            list.innerHTML = data.map(b => `
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
+                    <td class="p-4 font-bold text-slate-900 dark:text-slate-100">${b.name}<br><span class="text-[10px] text-slate-400 font-normal">Prot: ${b.protocol || 'AUDIO-00'}</span></td>
+                    <td class="p-4"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-brand-50 dark:bg-brand-950 text-brand-600">${b.service}</span></td>
+                    <td class="p-4 text-slate-600 dark:text-slate-300">${b.date}<br><span class="text-slate-400 text-[10px]">${b.time}</span></td>
+                    <td class="p-4 text-slate-500 max-w-xs truncate">${b.address}</td>
+                    <td class="p-4 text-slate-600 dark:text-slate-300">${b.phone}</td>
+                    <td class="p-4">
+                        <span onclick="toggleBookingStatus(${b.id})" class="cursor-pointer px-2.5 py-1 rounded-full text-[10px] font-bold ${b.status === 'Concluído' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">
+                            ${b.status || 'Pendente'}
+                        </span>
+                    </td>
+                    <td class="p-4 text-center">
+                        <button onclick="deleteBooking(${b.id})" class="text-rose-600 hover:underline font-bold text-xs">Excluir</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderQuotesTable(data) {
+            const list = document.getElementById('admin-quotes-list');
+            if(data.length === 0) {
+                list.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-400">Nenhum orçamento simulado ainda.</td></tr>`;
+                return;
+            }
+
+            list.innerHTML = data.map(q => `
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
+                    <td class="p-4 font-bold">${q.service}</td>
+                    <td class="p-4 text-slate-500">${q.area}</td>
+                    <td class="p-4 text-slate-500">${q.options}</td>
+                    <td class="p-4 font-black text-emerald-600">${q.total}</td>
+                    <td class="p-4 text-slate-400">${q.date}</td>
+                </tr>
+            `).join('');
+        }
+
+        function toggleBookingStatus(id) {
+            let bookings = JSON.parse(localStorage.getItem('opus_audio_bookings') || '[]');
+            bookings = bookings.map(b => {
+                if(b.id === id) {
+                    b.status = b.status === 'Concluído' ? 'Pendente' : 'Concluído';
+                }
+                return b;
+            });
+            localStorage.setItem('opus_audio_bookings', JSON.stringify(bookings));
+            loadAdminData();
+        }
+
+        function deleteBooking(id) {
+            let bookings = JSON.parse(localStorage.getItem('opus_audio_bookings') || '[]');
+            bookings = bookings.filter(b => b.id !== id);
+            localStorage.setItem('opus_audio_bookings', JSON.stringify(bookings));
+            loadAdminData();
+        }
+
+        function clearAllData() {
+            if(confirm('Tem certeza que deseja apagar os dados locais de agendamentos e orçamentos?')) {
+                localStorage.removeItem('opus_audio_bookings');
+                localStorage.removeItem('opus_audio_quotes');
+                loadAdminData();
+                showNotification('Dados de áudio locais resetados.');
+            }
+        }
+
+        function filterAdminTables() {
+            const query = document.getElementById('admin-search-booking').value.toLowerCase();
+            const bookings = JSON.parse(localStorage.getItem('opus_audio_bookings') || '[]');
+            const filtered = bookings.filter(b => b.name.toLowerCase().includes(query) || b.service.toLowerCase().includes(query) || b.address.toLowerCase().includes(query));
+            renderBookingsTable(filtered);
+        }
+
+        function exportBookingsToCSV() {
+            const bookings = JSON.parse(localStorage.getItem('opus_audio_bookings') || '[]');
+            if(bookings.length === 0) {
+                showNotification('Nenhum dado para exportar.');
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,Protocolo,Nome,Telefone,Email,Servico,Data,Horario,Endereco,Status\n";
+            bookings.forEach(b => {
+                csvContent += `"${b.protocol}","${b.name}","${b.phone}","${b.email}","${b.service}","${b.date}","${b.time}","${b.address}","${b.status}"\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `opus_audio_agendamentos_${Date.now()}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        }
+
+        // Custom Notification Popup
+        function showNotification(msg) {
+            const div = document.createElement('div');
+            div.className = 'fixed bottom-6 left-6 z-50 bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center space-x-3 border border-slate-700 animate-fade-in';
+            div.innerHTML = `<i data-lucide="info" class="w-5 h-5 text-brand-400"></i><span class="text-xs font-bold">${msg}</span>`;
+            document.body.appendChild(div);
+            lucide.createIcons();
+            setTimeout(() => div.remove(), 4000);
+        }
+
+        // On Page Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            calculateBudget();
+        });
+    </script>
+</body>
+</html>
